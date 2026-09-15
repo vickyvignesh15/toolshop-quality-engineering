@@ -6,7 +6,9 @@ test("User can search and view a product", async ({ page }) => {
   await page.getByRole("button", { name: "Search" }).click();
   await page
     .locator('[data-test="product-name"]')
-    .getByText(" Pliers ", { exact: true })
+    .filter({
+      hasText: /^\s*Pliers\s*$/
+    })
     .click();
   const productName = page.locator('[data-test="product-name"]');
   const price = page.locator('[data-test="unit-price"]');
