@@ -4,12 +4,14 @@ test("User can search and view a product", async ({ page }) => {
   await page.goto("https://practicesoftwaretesting.com/");
   await page.getByPlaceholder("Search").fill("Pliers");
   await page.getByRole("button", { name: "Search" }).click();
-  await page.locator('[class="card"]').nth(1).click();
-  const productName = await page
+  await page
     .locator('[data-test="product-name"]')
-    .textContent();
-  const price = await page.locator('[data-test="unit-price"]').textContent();
-  expect(productName?.trim()).toBe("Pliers");
-  expect(price).toBe("12.01");
-  expect(page.locator('[data-test="product-description"]')).toBeVisible();
+    .getByText(" Pliers ", { exact: true })
+    .click();
+  const productName = page.locator('[data-test="product-name"]');
+  const price = page.locator('[data-test="unit-price"]');
+  const productDescription = page.locator('[data-test="product-description"]');
+  await expect(productName).toHaveText("Pliers");
+  await expect(price).toHaveText("12.01");
+  await expect(productDescription).toBeVisible();
 });
